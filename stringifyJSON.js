@@ -4,55 +4,56 @@
 // but you don't so you're going to write it from scratch:
 
 var stringifyJSON = function(obj) {
-
-
   //check to see if object is function or undefined
-  if(typeof obj === 'function' || typeof obj === 'undefined') 
+    var value = '';
+
+  if (typeof obj === 'function' || typeof obj === 'undefined') 
   {
     return null;
   }
   //check to see if object is is number or boolean or null
-  if(typeof obj === "boolean" || typeof obj === null || typeof obj === "number") 
+  if (typeof obj === 'number' || typeof obj === 'boolean' || obj === null) 
   {
     //if so, run the string function on the object and return the result
-
-   return String(obj);
+    return String(obj);
   }
   //if object is of type string
-  if(typeof obj === 'string') 
+  if (typeof obj === 'string') 
   {
     //return the obj, no need for change
     return '"' + obj + '"';
   }
-  //check for values in array
-  if(Array.isArray(obj)) 
+  //check if array is greater than length 0
+  if (Array.isArray(obj) && obj.length === 0)
   {
-    //recursively go through the array
-    return '[' + obj.map(function(value) 
-    {
-      //each value will have stringify run on it, returning the type of obj it is using the if statements above
+    //if not, then return empty array
+    return value+= '[]';
+  }
+  //check for values in array
+  if (Array.isArray(obj) && obj.length > 0) 
+  {
+    //recursively go through function
+    return '[' + obj.map(function(value) {
       return stringifyJSON(value);
     }) + ']';
+    
   }
 
-  var value = "";
-  var count = Object.keys(obj).length;
-  //loop through object keys
-  for(var k in obj) 
+  var num = Object.keys(obj).length;
+  for (var k in obj) 
   {
-    //
-    if ( typeof obj[k] === 'undefined' || typeof obj[k] === 'function' ||) 
+    if (typeof obj[k] === 'function' || typeof obj[k] === 'undefined') 
     {
-      count--;
+      num--;
     } 
-    else if (count > 1) 
+    else if (num > 1) 
     {
-      value = value + stringifyJSON(k) + ':' + stringifyJSON(obj[k]) + ',';
-      count--;
+      value += stringifyJSON(k) + ':' + stringifyJSON(obj[k]) + ',';
+      num--;
     } 
     else 
     {
-      value = value + stringifyJSON(k) + ':' + stringifyJSON(obj[k]);
+      value += stringifyJSON(k) + ':' + stringifyJSON(obj[k]);
     }
   }
   return '{' + value + '}';
