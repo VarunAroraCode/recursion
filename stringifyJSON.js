@@ -38,8 +38,16 @@ var stringifyJSON = function(obj) {
     }) + ']';
     
   }
-
-  var num = Object.keys(obj).length;
+  var num;
+  if(obj !== null)
+  {
+    var num = Object.keys(obj).length;
+  }
+  else
+  {
+    var num = 0;
+  }
+  
   for (var k in obj) 
   {
     if (typeof obj[k] === 'function' || typeof obj[k] === 'undefined') 
